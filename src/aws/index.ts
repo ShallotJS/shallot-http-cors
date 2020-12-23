@@ -6,7 +6,7 @@
 import type { ShallotMiddlewareWithOptions } from 'shallot/dist/aws/core';
 import type { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
 
-interface TShallotHTTPCorsOptions extends Record<string, unknown> {
+export interface TShallotHTTPCorsOptions extends Record<string, unknown> {
   /** Sets Access-Control-Allow-Headers */
   allowHeaders?: string;
   /** Sets Access-Control-Allow-Origins. Default ['*'] */
