@@ -43,7 +43,7 @@ describe('CORS middleware', () => {
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).toEqual({
-      'Access-Control-Allow-Origin': mockEvent.headers.Origin,
+      'Access-Control-Allow-Origin': '*',
     });
   });
 
@@ -64,7 +64,7 @@ describe('CORS middleware', () => {
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).toEqual({
-      'Access-Control-Allow-Origin': mockEvent.headers.Origin,
+      'Access-Control-Allow-Origin': '*',
       'Cache-Control': cacheControl,
     });
   });
@@ -85,7 +85,7 @@ describe('CORS middleware', () => {
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).toEqual({
-      'Access-Control-Allow-Origin': mockEvent.headers.Origin,
+      'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': 'true',
     });
   });
@@ -107,7 +107,7 @@ describe('CORS middleware', () => {
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).toEqual({
-      'Access-Control-Allow-Origin': mockEvent.headers.Origin,
+      'Access-Control-Allow-Origin': '*',
       'Access-Control-Max-Age': maxAge,
     });
   });
