@@ -3,8 +3,8 @@
  * https://github.com/middyjs/middy/tree/master/packages/http-cors
  */
 
-import type { ShallotMiddlewareWithOptions } from 'shallot/dist/aws/core';
 import type { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
+import type { ShallotAWSMiddlewareWithOptions } from '@shallot/aws';
 
 export interface TShallotHTTPCorsOptions extends Record<string, unknown> {
   /** Sets Access-Control-Allow-Headers */
@@ -23,7 +23,7 @@ const setHeaderIfNotExists = (
   response: APIGatewayProxyResult,
   header: string,
   value?: string | boolean | number
-) => {
+): void => {
   if (value != null && response.headers && response.headers[header] == null) {
     response.headers[header] = String(value);
   }
@@ -47,12 +47,13 @@ const parseAllowedOrigin = (event: APIGatewayEvent, allowedOrigins: string[]): s
  *
  * @param config optional object to pass config options
  */
-const ShallotAWSHttpCors: ShallotMiddlewareWithOptions<
+const ShallotAWSHttpCors: ShallotAWSMiddlewareWithOptions<
   APIGatewayEvent,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   any,
   TShallotHTTPCorsOptions
 > = (config) => ({
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   finally: async (request) => {
     config = {
       allowedOrigins: ['*'],

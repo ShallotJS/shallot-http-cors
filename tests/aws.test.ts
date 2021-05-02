@@ -7,7 +7,7 @@ import type {
 
 import { test, describe, jest, expect } from '@jest/globals';
 
-import { ShallotAWS } from 'shallot';
+import ShallotAWS from '@shallot/aws';
 import { ShallotAWSHttpCors } from '../src';
 
 describe('CORS middleware', () => {
@@ -34,12 +34,12 @@ describe('CORS middleware', () => {
   test('Default usage', async () => {
     const wrappedHandler = ShallotAWS(mockHandler).use(ShallotAWSHttpCors());
 
-    const mockEvent = ({
+    const mockEvent = {
       httpMethod: 'GET',
       headers: {
         Origin: 'https://www.example.com',
       },
-    } as unknown) as APIGatewayEvent;
+    } as unknown as APIGatewayEvent;
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).toEqual({
@@ -55,12 +55,12 @@ describe('CORS middleware', () => {
       })
     );
 
-    const mockEvent = ({
+    const mockEvent = {
       httpMethod: 'OPTIONS',
       headers: {
         Origin: 'https://www.example.com',
       },
-    } as unknown) as APIGatewayEvent;
+    } as unknown as APIGatewayEvent;
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).toEqual({
@@ -76,12 +76,12 @@ describe('CORS middleware', () => {
       })
     );
 
-    const mockEvent = ({
+    const mockEvent = {
       httpMethod: 'GET',
       headers: {
         Origin: 'https://www.example.com',
       },
-    } as unknown) as APIGatewayEvent;
+    } as unknown as APIGatewayEvent;
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).toEqual({
@@ -98,12 +98,12 @@ describe('CORS middleware', () => {
       })
     );
 
-    const mockEvent = ({
+    const mockEvent = {
       httpMethod: 'GET',
       headers: {
         Origin: 'https://www.example.com',
       },
-    } as unknown) as APIGatewayEvent;
+    } as unknown as APIGatewayEvent;
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).toEqual({
@@ -120,12 +120,12 @@ describe('CORS middleware', () => {
       })
     );
 
-    const mockEvent = ({
+    const mockEvent = {
       httpMethod: 'GET',
       headers: {
         Origin: 'https://www.example.com',
       },
-    } as unknown) as APIGatewayEvent;
+    } as unknown as APIGatewayEvent;
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).toEqual({
@@ -141,12 +141,12 @@ describe('CORS middleware', () => {
       })
     );
 
-    const mockEvent = ({
+    const mockEvent = {
       httpMethod: 'GET',
       headers: {
         origin: allowedOrigin,
       },
-    } as unknown) as APIGatewayEvent;
+    } as unknown as APIGatewayEvent;
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).toEqual({
@@ -161,12 +161,12 @@ describe('CORS middleware', () => {
       })
     );
 
-    const mockEvent = ({
+    const mockEvent = {
       httpMethod: 'GET',
       headers: {
         Origin: 'https://www.example.com',
       },
-    } as unknown) as APIGatewayEvent;
+    } as unknown as APIGatewayEvent;
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).toEqual({});
@@ -175,34 +175,35 @@ describe('CORS middleware', () => {
   test('No method', async () => {
     const wrappedHandler = ShallotAWS(mockHandler).use(ShallotAWSHttpCors());
 
-    const mockEvent = ({
+    const mockEvent = {
       headers: {
         Origin: 'https://www.example.com',
       },
-    } as unknown) as APIGatewayEvent;
+    } as unknown as APIGatewayEvent;
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).not.toBeDefined;
   });
 
   test('response undefined', async () => {
-    const handlerNoRes = () => undefined;
+    const handlerNoRes = (): void => undefined;
     const wrappedHandler = ShallotAWS<APIGatewayEvent, APIGatewayProxyResult>(
       handlerNoRes
     ).use(ShallotAWSHttpCors());
 
-    const mockEvent = ({
+    const mockEvent = {
       httpMethod: 'GET',
       headers: {
         Origin: 'https://www.example.com',
       },
-    } as unknown) as APIGatewayEvent;
+    } as unknown as APIGatewayEvent;
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).toBeDefined;
   });
 
   test('Predefined headers', async () => {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const handlerWithResHeaders = async () => ({
       body: '',
       statusCode: 200,
@@ -212,12 +213,12 @@ describe('CORS middleware', () => {
       handlerWithResHeaders
     ).use(ShallotAWSHttpCors());
 
-    const mockEvent = ({
+    const mockEvent = {
       httpMethod: 'GET',
       headers: {
         Origin: 'https://www.example.com',
       },
-    } as unknown) as APIGatewayEvent;
+    } as unknown as APIGatewayEvent;
     const res = await wrappedHandler(mockEvent, mockContext, jest.fn());
 
     expect(res.headers).toMatchObject((await handlerWithResHeaders()).headers);
